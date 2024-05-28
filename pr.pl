@@ -130,9 +130,7 @@ compatible_power(Processor, GraphicsCard, PowerSupply) :-
 % Sprawdzenie kompatybilnosci procesora z plyta glowna pod wzgledem gniazda
 compatible_processor(Processor, Motherboard) :-
     processor(Processor, Socket, _),
-    motherboard(_, Socket, _, _, _),
-    Processor \= '',
-    Motherboard \= ''.
+    motherboard(Motherboard, Socket, _, _, _).
 
 % Sprawdzenie kompatybilnosci chlodzenia z procesorem pod wzgledem gniazda
 compatible_cooler(Processor, Cooler) :-
@@ -209,7 +207,7 @@ choose_graphics_card(Case, GraphicsCard) :-
 
 choose_processor(Motherboard, Processor) :-
     write('Wybierz procesor: '), nl,
-    setof(P, compatible_processor(P, Motherboard), Processors),
+    findall(P, compatible_processor(P, Motherboard), Processors),
     print_list(Processors),
     read(Index),
     nth1(Index, Processors, Processor),
